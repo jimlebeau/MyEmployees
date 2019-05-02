@@ -7,8 +7,8 @@ import com.jrl.myemployees.rest.model.History;
 
 public interface IHistoryDao {
 	List<History> getAllHistory();
-	History getHistoryById(int hisstoryId);
-	List<History> getHistoryByEmployeeId(int Id);
+	History getHistoryById(int historyId);
+	List<History> getHistoryByEmployeeId(int employeeId);
 	void addHistory(History history);
 	void updateHistory(History history);
 	void deleteHistory(int historyId);

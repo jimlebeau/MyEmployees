@@ -8,7 +8,7 @@ public interface IEmployeeService {
 	List<Employee> getAllEmployees();
 	Employee getEmployeeById(int employeeId);
 	boolean addEmployee(Employee employee);
-	void updateEmployee(Employee employee);
+	boolean updateEmployee(Employee employee);
 	void deleteEmployee(int id);
 
 }

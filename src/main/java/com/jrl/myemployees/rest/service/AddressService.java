@@ -45,9 +45,13 @@ public class AddressService implements IAddressService {
 	}
 
 	@Override
-	public void updateAddress(Address address) {
-		dao.updateAddress(address);
-		
+	public boolean updateAddress(Address address) {
+		if (address.getAddressId() != null && address.getAddressId() != 0) {
+			dao.updateAddress(address);
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override

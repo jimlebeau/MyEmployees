@@ -35,7 +35,7 @@ public class HistoryService implements IHistoryService {
 	}
 
 	@Override
-	public boolean addHistorry(History history) {
+	public boolean addHistory(History history) {
 		if (dao.historyExists(history.getStartDate())) {
 			return Boolean.FALSE;
 		} else {
@@ -45,9 +45,13 @@ public class HistoryService implements IHistoryService {
 	}
 
 	@Override
-	public void updateHistory(History history) {
-		dao.updateHistory(history);
-		
+	public boolean updateHistory(History history) {
+		if (history.getHistoryId() != null && history.getHistoryId() != 0) {
+			dao.updateHistory(history);
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
