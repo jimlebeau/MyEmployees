@@ -19,8 +19,8 @@ import com.jrl.myemployees.rest.model.EmployeeRowMapper;
 public class EmployeeDao implements IEmployeeDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeDao.class);
-	private static final String GETALLEMPLOYEES = "select EmployeeId, FirstName, LastName, Email, CellPhone from Emmployees";
-	private static final String GETEMPLOYEEBYID = "select EmployeeId, FirstName, LastName, Email, CellPhone from Emmployees where EmployeeId = ?";
+	private static final String GETALLEMPLOYEES = "select EmployeeId, FirstName, LastName, Email, CellPhone from Employees";
+	private static final String GETEMPLOYEEBYID = "select EmployeeId, FirstName, LastName, Email, CellPhone from Employees where EmployeeId = ?";
 	private static final String INSERTEMPLOYEE = "INSERT INTO Employees (FirstName, LastName, Email, CellPhone) values (?, ?, ?, ?)";
 	private static final String GETEMPLOYEEBYLASTNAME = "SELECT EmployeeId FROM Employees WHERE LastName = ?";
 	private static final String UPDATEEMPLOYEE = "UPDATE Employees SET FirstName=?, LastName=?, Email=?, CellPhone=? WHERE EmployeeId=?";

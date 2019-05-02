@@ -72,7 +72,7 @@ public class HistoryServiceTest {
 		Mockito.when(dao.historyExists(hist1.getStartDate())).thenReturn(Boolean.FALSE);
 		Mockito.doNothing().when(dao).addHistory(hist1);
 		
-		Boolean result = service.addHistorry(hist1);
+		Boolean result = service.addHistory(hist1);
 		
 		assertThat(result, equalTo(Boolean.TRUE));
 	}
@@ -82,7 +82,7 @@ public class HistoryServiceTest {
 		History hist1 = new History("description 1", testStartDate, null, 1, 1);
 
 		Mockito.when(dao.historyExists(hist1.getStartDate())).thenReturn(Boolean.TRUE);
-		Boolean result = service.addHistorry(hist1);
+		Boolean result = service.addHistory(hist1);
 		assertThat(result, equalTo(Boolean.FALSE));
 	}
 }

@@ -8,8 +8,8 @@ public interface IHistoryService {
 	List<History> getAllHistory();
 	History getHistoryById(int historyId);
 	List<History> getHistoryByEmployeeId(int employeeId);
-	boolean addHistorry(History history);
-	void updateHistory(History history);
+	boolean addHistory(History history);
+	boolean updateHistory(History history);
 	void deleteHistory(int historyInt);
 
 }

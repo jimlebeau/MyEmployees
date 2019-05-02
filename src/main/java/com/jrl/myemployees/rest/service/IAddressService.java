@@ -9,7 +9,7 @@ public interface IAddressService {
 	Address getAddressById(int addressId);
 	List<Address> getAddressByEmployeeId(int employeeId);
 	boolean addAddress(Address address);
-	void updateAddress(Address address);
+	boolean updateAddress(Address address);
 	void deleteAddress(int addressId);
 
 }
