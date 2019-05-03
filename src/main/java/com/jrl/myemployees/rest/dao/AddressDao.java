@@ -23,9 +23,9 @@ public class AddressDao implements IAddressDao {
 	private static final String GETALLADDRESSES = "select StreetAddress, City, ZipCode, State, EmployeeId, AddressId from addresses";
 	private static final String GETADDRESSESBYID = "select StreetAddress, City, ZipCode, State, EmployeeId, AddressId from addresses where AddressId = ?";
 	private static final String GETADDRESSESBYEMPLOYEEID = "select StreetAddress, City, ZipCode, State, EmployeeId, AddressId from addresses where EmployeeId = ?";
-	private static final String INSERTADDRESSES = "insert into Address (StreetAddress, City, ZipCode, State, EmployeeId) values (?, ?, ?. ?, ?)";
+	private static final String INSERTADDRESSES = "insert into Addresses (StreetAddress, City, ZipCode, State, EmployeeId) values (?, ?, ?, ?, ?)";
 	private static final String GETADDRESSBYSTREETADDRESS = "select AddressId from Addresses where StreetAddress = ?";
-	private static final String UPDATEADDRESS = "update Addresses set StreetAddress=?. City=?, ZipCode=?, State=?, EmployeeId=? where AddressId = ?";
+	private static final String UPDATEADDRESS = "update Addresses set StreetAddress=?, City=?, ZipCode=?, State=?, EmployeeId=? where AddressId = ?";
 	private static final String DELETEADDRESS = "delete from Addresses where AddressId = ?";
 	private static final String ADDRESSEXISTS = "select count(*) from Addresses where StreetAddress = ?";
 
