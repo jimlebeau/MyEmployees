@@ -1,5 +1,6 @@
 package com.jrl.myemployees.rest.dao;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class HistoryDao implements IHistoryDao{
 	private static final String GETALLHISTORY = "select JobDescription, StartDate, EndDate, EmployeeId, HistoryId from History";
 	private static final String GETHISTORYBYEMPLOYEEID = "select JobDescription, StartDate, EndDate, EmployeeId, HistoryId from History where EmployeeId = ?";
 	private static final String GETHISTORYBYID = "select JobDescription, StartDate, EndDate, EmployeeId, HistoryId from History where HistoryId = ?";
-	private static final String INSERTHISTORY = "insert into History (JobDescription, StartDate, EndDate, EmployeeId) values (?, ?, ?. ?)";
+	private static final String INSERTHISTORY = "insert into History (JobDescription, StartDate, EndDate, EmployeeId) values (?, ?, ?, ?)";
 	private static final String GETHISTORYBYSTARTDATE = "select HistoryId from  History where StartDate = ?";
 	private static final String UPDATEHISTORY = "update History set JobDescription=?, StartDate=?, EndDate=?, EmployeeId=? where HistoryId = ?";
 	private static final String DELETEHISTORY = "delete from History where HistoryId = ?";
@@ -62,18 +63,18 @@ public class HistoryDao implements IHistoryDao{
 
 	@Override
 	public void updateHistory(History history) {
-		jdbcTemplate.update(UPDATEHISTORY, history.getJobDescription(), history.getStartDate(), history.getEndDate(), history.getEmployeeId());
+		jdbcTemplate.update(UPDATEHISTORY, history.getJobDescription(), history.getStartDate(), history.getEndDate(), history.getEmployeeId(), history.getHistoryId());
 		
 	}
 
 	@Override
 	public void deleteHistory(int historyId) {
-		jdbcTemplate.update(DELETEHISTORY);
+		jdbcTemplate.update(DELETEHISTORY, historyId);
 		
 	}
 
 	@Override
-	public boolean historyExists(Date startDate) {
+	public boolean historyExists(LocalDate startDate) {
 		int count = jdbcTemplate.queryForObject(HISTORYEXISTS, Integer.class, startDate);
 		if (count == 0) {
 			return false;

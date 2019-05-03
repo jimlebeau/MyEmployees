@@ -11,8 +11,8 @@ public class HistoryRowMapper implements RowMapper<History>{
 	public History mapRow(ResultSet rs, int rowNum) throws SQLException {
 		History history = new History();
 		history.setJobDescription(rs.getString("JobDescription"));
-		history.setStartDate(rs.getDate("StartDate"));
-		history.setEndDate(rs.getDate("EndDate"));
+		history.setStartDate(rs.getDate("StartDate").toLocalDate());
+		history.setEndDate(rs.getDate("EndDate").toLocalDate());
 		history.setEmployeeId(rs.getInt("EmployeeId"));
 		history.setHistoryId(rs.getInt("HistoryId"));
 		return history;

@@ -2,6 +2,8 @@ package com.jrl.myemployees.rest.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,15 +30,17 @@ public class HistoryServiceTest {
 	
 	private HistoryService service;
 	private List<History> histories;
-	private Date testStartDate;
+	private LocalDate testStartDate;
 	
 	
 	@Before
 	public void setUp() throws ParseException {
 		dao = Mockito.mock(IHistoryDao.class);
 		service = new HistoryService(dao);
-		String dateString = "01/05/2019";
-		testStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateString);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String dateString = "2019-01-21";
+		testStartDate = LocalDate.parse(dateString, formatter);
 		
 		History hist1 = new History("description 1", testStartDate, null, 1, 1);
 		History hist2 = new History("description 2", testStartDate, null, 2, 2);
