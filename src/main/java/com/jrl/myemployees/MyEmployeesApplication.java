@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.jrl.myemployees"})
+@ComponentScan(basePackages = {"com.jrl.myemployees, com.jrl.myemployees.rest"})
 public class MyEmployeesApplication {
 	private static final Logger logger = LoggerFactory.getLogger(MyEmployeesApplication.class);
 	
