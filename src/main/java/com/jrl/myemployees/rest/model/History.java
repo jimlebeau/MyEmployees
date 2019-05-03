@@ -1,6 +1,7 @@
 package com.jrl.myemployees.rest.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class History implements Serializable {
@@ -9,9 +10,9 @@ public class History implements Serializable {
 
 	private String jobDescription;
 	
-	private Date startDate;
+	private LocalDate startDate;
 	
-	private Date endDate;
+	private LocalDate endDate;
 	
 	private Integer employeeId;
 	
@@ -21,7 +22,7 @@ public class History implements Serializable {
 		
 	}
 
-	public History(String jobDescription, Date startDate, Date endDate, Integer employeeId, Integer historyId) {
+	public History(String jobDescription, LocalDate startDate, LocalDate endDate, Integer employeeId, Integer historyId) {
 		super();
 		this.jobDescription = jobDescription;
 		this.startDate = startDate;
@@ -38,19 +39,19 @@ public class History implements Serializable {
 		this.jobDescription = jobDescription;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

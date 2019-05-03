@@ -1,5 +1,6 @@
 package com.jrl.myemployees.rest.dao;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface IHistoryDao {
 	void addHistory(History history);
 	void updateHistory(History history);
 	void deleteHistory(int historyId);
-	boolean historyExists(Date startDate);
+	boolean historyExists(LocalDate startDate);
 
 }
