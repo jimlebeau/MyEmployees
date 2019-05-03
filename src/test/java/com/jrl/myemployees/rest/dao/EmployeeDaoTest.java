@@ -6,9 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -74,7 +72,9 @@ public class EmployeeDaoTest {
 		dao.addEmployee(emp1);
 		emp1.setEmail(newEmail);
 		dao.updateEmployee(emp1);
-		assertThat(emp1.getEmail(), equalTo(newEmail));
+		
+		Employee result = dao.getEmployeeById(emp1.getEmployeeId());
+		assertThat(result.getEmail(), equalTo(emp1.getEmail()));
 		
 	}
 	
