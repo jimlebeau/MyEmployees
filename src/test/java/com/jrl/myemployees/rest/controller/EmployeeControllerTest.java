@@ -127,7 +127,7 @@ public class EmployeeControllerTest {
 
 	@Test
 	public void testAddEmployeeSuccess() throws Exception {
-		Mockito.when(service.addEmployee(any(Employee.class))).thenReturn(Boolean.TRUE);
+		Mockito.when(service.addEmployee(any(Employee.class))).thenReturn(employee);
 		String actual = mapper.writeValueAsString(employee);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -146,7 +146,7 @@ public class EmployeeControllerTest {
 	
 	@Test
 	public void testAddEmployeeConflict() throws Exception {
-		Mockito.when(service.addEmployee(any(Employee.class))).thenReturn(Boolean.FALSE);
+		Mockito.when(service.addEmployee(any(Employee.class))).thenReturn(null);
 		String actual = mapper.writeValueAsString(employee);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders

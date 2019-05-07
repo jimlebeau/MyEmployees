@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import com.jrl.myemployees.rest.model.Employee;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeServiceTest {
@@ -58,11 +60,11 @@ public class EmployeeServiceTest {
 		Employee emp1 = new Employee(1, "first1", "last1", "email1", BigDecimal.valueOf(1111111));
 		
 		Mockito.when(dao.employeeExists(emp1.getLastName())).thenReturn(Boolean.FALSE);
-		Mockito.doNothing().when(dao).addEmployee(emp1);
+		Mockito.when(dao.addEmployee(emp1)).thenReturn(emp1);
 		
-		Boolean result = service.addEmployee(emp1);
+		Employee result = service.addEmployee(emp1);
 		
-		assertThat(result, equalTo(Boolean.TRUE));
+		assertThat(result.getEmployeeId(), equalTo(1));
 		
 	}
 	
@@ -70,7 +72,7 @@ public class EmployeeServiceTest {
 	public void addEmployeeFail() {
 		Employee emp1 = new Employee(1, "first1", "last1", "email1", BigDecimal.valueOf(1111111));
 		Mockito.when(dao.employeeExists(emp1.getLastName())).thenReturn(Boolean.TRUE);
-		Boolean result = service.addEmployee(emp1);
-		assertThat(result, equalTo(Boolean.FALSE));
+		Employee result = service.addEmployee(emp1);
+		assertNull(result);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -39,17 +40,26 @@ public class EmployeeDao implements IEmployeeDao {
 	@Override
 	public Employee getEmployeeById(int employeeId) {
 		RowMapper<Employee> rowMapper = new BeanPropertyRowMapper<Employee>(Employee.class);
-		Employee employee = jdbcTemplate.queryForObject(GETEMPLOYEEBYID, rowMapper, employeeId);
+		Employee employee = null;
+
+		try {
+		employee = jdbcTemplate.queryForObject(GETEMPLOYEEBYID, rowMapper, employeeId);
+		} catch (EmptyResultDataAccessException ex) {
+			
+		}
 		return employee;
 	}
 
 	@Override
-	public void addEmployee(Employee employee) {
+	public Employee addEmployee(Employee employee) {
 		jdbcTemplate.update(INSERTEMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getCellPhone());
-		int employeeId = jdbcTemplate.queryForObject(GETEMPLOYEEBYLASTNAME,  Integer.class, employee.getLastName());
-		
-		employee.setEmployeeId(employeeId);
-		
+		try {
+			int employeeId = jdbcTemplate.queryForObject(GETEMPLOYEEBYLASTNAME,  Integer.class, employee.getLastName());
+			employee.setEmployeeId(employeeId);
+		} catch (EmptyResultDataAccessException ex) {
+			employee = null;
+		}
+		return employee;
 	}
 
 	@Override

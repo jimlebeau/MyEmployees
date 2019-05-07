@@ -30,12 +30,12 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public synchronized boolean addEmployee(Employee employee) {
+	public Employee addEmployee(Employee employee) {
 		if (dao.employeeExists(employee.getLastName())) {
-			return Boolean.FALSE;
+			return null;
 		} else {
-			dao.addEmployee(employee);
-			return Boolean.TRUE;
+			Employee addedEmployee = dao.addEmployee(employee);
+			return addedEmployee;
 		}
 	}
 
