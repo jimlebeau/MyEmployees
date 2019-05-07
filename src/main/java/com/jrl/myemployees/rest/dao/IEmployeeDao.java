@@ -7,7 +7,7 @@ import com.jrl.myemployees.rest.model.Employee;
 public interface IEmployeeDao {
 	List<Employee> getAllEmployees();
 	Employee getEmployeeById(int employeeId);
-	void addEmployee(Employee employee);
+	Employee addEmployee(Employee employee);
 	void updateEmployee(Employee employee);
 	void deleteEmployee(int employeeId);
 	boolean employeeExists(String lastName);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -14,10 +16,12 @@ public class History implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty
 	private String jobDescription;
 	
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
+//	@NotEmpty
 	private LocalDate startDate;
 	
 	@JsonDeserialize(using = LocalDateDeserializer.class)

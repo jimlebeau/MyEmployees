@@ -2,14 +2,18 @@ package com.jrl.myemployees.rest.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 public class Address implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty(message = "street address can not be empty")
 	private String streetAddress;
 	
 	private String city;
 	
+	@NotEmpty(message = "zip code can not be empty")
 	private String zipCode;
 	
 	private String state;

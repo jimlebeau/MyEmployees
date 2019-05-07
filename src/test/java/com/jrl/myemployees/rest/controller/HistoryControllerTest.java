@@ -140,6 +140,7 @@ public class HistoryControllerTest {
 	public void testAddHistoryConflict() throws Exception {
 		Mockito.when(service.addHistory(any(History.class))).thenReturn(Boolean.FALSE);
 		String actual = mapper.writeValueAsString(history);
+		System.out.println(actual);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/history/")
