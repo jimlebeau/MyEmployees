@@ -41,7 +41,15 @@ public class EmployeeExceptionController extends ResponseEntityExceptionHandler{
 		ErrorResponse error = new ErrorResponse("Employee record already exists", details);
 		return new ResponseEntity<Object>(error, HttpStatus.CONFLICT);
 	}
-		
+
+	@ExceptionHandler(RecordDoesNotExistException.class)
+	public final ResponseEntity<Object> handleEmployeeDoesNotExistException(RecordDoesNotExistException ex, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		ErrorResponse error = new ErrorResponse("Employee record already exists", details);
+		return new ResponseEntity<Object>(error, HttpStatus.NOT_MODIFIED);
+	}
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -51,7 +59,7 @@ public class EmployeeExceptionController extends ResponseEntityExceptionHandler{
 				.stream()
 				.map(fieldError -> fieldError.getDefaultMessage())
 				.collect(Collectors.toList());
-		ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), details);
+		ErrorResponse error = new ErrorResponse("Validation Failed", details);
 		return handleExceptionInternal(ex, error, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	

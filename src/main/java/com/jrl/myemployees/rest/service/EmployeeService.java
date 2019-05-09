@@ -31,21 +31,19 @@ public class EmployeeService implements IEmployeeService {
 
 	@Override
 	public Employee addEmployee(Employee employee) {
-		if (dao.employeeExists(employee.getLastName())) {
+		if (dao.employeeExists(employee.getTaxId())) {
 			return null;
 		} else {
-			Employee addedEmployee = dao.addEmployee(employee);
-			return addedEmployee;
+			return dao.addEmployee(employee);
 		}
 	}
 
 	@Override
-	public synchronized boolean updateEmployee(Employee employee) {
-		if (employee.getEmployeeId() != null && employee.getEmployeeId() != 0) {
-			dao.updateEmployee(employee);
-			return Boolean.TRUE;
+	public Employee updateEmployee(Employee employee) {
+		if (dao.getEmployeeById(employee.getEmployeeId()) != null) {
+			return dao.updateEmployee(employee);
 		} else {
-			return Boolean.FALSE;
+			return null;
 		}
 	}
 

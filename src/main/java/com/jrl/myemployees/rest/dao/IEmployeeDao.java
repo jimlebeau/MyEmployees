@@ -8,8 +8,8 @@ public interface IEmployeeDao {
 	List<Employee> getAllEmployees();
 	Employee getEmployeeById(int employeeId);
 	Employee addEmployee(Employee employee);
-	void updateEmployee(Employee employee);
+	Employee updateEmployee(Employee employee);
 	void deleteEmployee(int employeeId);
-	boolean employeeExists(String lastName);
+	boolean employeeExists(String taxId);
 
 }

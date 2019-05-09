@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,18 +29,23 @@ public class Employee implements Serializable {
 	private String email;
 	
 	private BigDecimal cellPhone;
+	
+	@NotEmpty(message = "TaxId is required")
+	@Size(min=9, max=9, message = "TaxId must be 9 characters")
+	private String taxId;
 
 	public Employee() {
 		
 	}
 	
-	public Employee(Integer employeeId, String firstName, String lastName, String email, BigDecimal cellPhone) {
+	public Employee(Integer employeeId, String firstName, String lastName, String email, BigDecimal cellPhone, String taxId) {
 		super();
 		this.employeeId = employeeId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.cellPhone = cellPhone;
+		this.taxId = taxId;
 	}
 
 	public Integer getEmployeeId() {
@@ -81,11 +87,19 @@ public class Employee implements Serializable {
 	public void setCellPhone(BigDecimal cellPhone) {
 		this.cellPhone = cellPhone;
 	}
+	
+	public String getTaxId() {
+		return taxId;
+	}
+	
+	public void setTaxId(String taxId) {
+		this.taxId = taxId;
+	}
 
 	@Override
 	public String toString() {
 		return "Employee [employeeId=" + employeeId + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
-				+ email + ", cellPhone=" + cellPhone + "]";
+				+ email + ", cellPhone=" + cellPhone + ", taxId=" + taxId + "]";
 	}
 	
 	

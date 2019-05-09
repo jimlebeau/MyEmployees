@@ -40,7 +40,7 @@ public class AddressDaoTest {
 	public void setup() {
 		address1 = new Address("111 First St", "San Jose", "98765", "CA", null, 1);
 		address2 = new Address("222 Second St", "Palo Alto", "87654", "CA", null, 2);
-		employee = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111));
+		employee = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111), "111223333");
 	}
 	
 	@Test

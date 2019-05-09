@@ -52,7 +52,7 @@ public class HistoryDaoTest {
 		
 		history1 = new History("job description 1", testStartDate, testEndDate, null, 1);
 		history2 = new History("job description 2", testEndDate, testStartDate, null, 2);
-		employee = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111));
+		employee = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111), "111223333");
 	}
 
 	@Test

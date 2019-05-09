@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.jrl.myemployees.rest.exception.RecordAlreadyExistException;
+import com.jrl.myemployees.rest.exception.RecordDoesNotExistException;
 import com.jrl.myemployees.rest.exception.RecordNotFoundException;
 import com.jrl.myemployees.rest.model.Employee;
 import com.jrl.myemployees.rest.service.IEmployeeService;
@@ -51,7 +52,6 @@ public class EmployeeController {
 	
 	@PostMapping(value = "/")
 	public ResponseEntity<Employee> addEmployee (@Valid @RequestBody Employee employee, UriComponentsBuilder builder) {
-		service.addEmployee(employee);
 		Employee addedEmployee = service.addEmployee(employee);
 		if (addedEmployee == null) {
 			throw new RecordAlreadyExistException("Employee record already exits - " + employee.toString());
@@ -61,13 +61,11 @@ public class EmployeeController {
 	
 	@PutMapping(value = "/")
 	public ResponseEntity<Employee> updateEmployee (@Valid @RequestBody Employee employee) {
-		
-		boolean flag = service.updateEmployee(employee);
-		if (flag == Boolean.FALSE) {
-			return new ResponseEntity<Employee>(HttpStatus.NOT_MODIFIED);
-		} else {
-			return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+		Employee updatedEmployee = service.updateEmployee(employee);
+		if (updatedEmployee == null) {
+			throw new RecordDoesNotExistException("Employee record does not exist - " + employee.toString());
 		}
+		return new ResponseEntity<Employee>(updatedEmployee, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
