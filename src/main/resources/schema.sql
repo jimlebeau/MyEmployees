@@ -1,3 +1,3 @@
-CREATE TABLE Employees (EmployeeId int(11) NOT NULL AUTO_INCREMENT, FirstName varchar(100) NOT NULL, LastName varchar(100) NOT NULL, Email varchar(100) NOT NULL, CellPhone decimal(10,0) DEFAULT NULL, PRIMARY KEY (EmployeeId))
+CREATE TABLE Employees (EmployeeId int(11) NOT NULL AUTO_INCREMENT, FirstName varchar(100) NOT NULL, LastName varchar(100) NOT NULL, Email varchar(100) NOT NULL, CellPhone decimal(10,0) DEFAULT NULL, TaxId varchar(9) NOT NULL, PRIMARY KEY (EmployeeId))
 CREATE TABLE Addresses (StreetAddress varchar(100) DEFAULT NULL, City varchar(100) DEFAULT NULL, ZipCode varchar(100) DEFAULT NULL, State varchar(100) DEFAULT NULL, EmployeeId int(11) DEFAULT NULL, AddressId int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (AddressId))
 CREATE TABLE History (JobDescription varchar(100) DEFAULT NULL, StartDate date DEFAULT NULL, EndDate date DEFAULT NULL, EmployeeId int(11) DEFAULT NULL, HistoryId int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (HistoryId))

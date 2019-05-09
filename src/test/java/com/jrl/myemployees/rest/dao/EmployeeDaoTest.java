@@ -16,6 +16,7 @@ import com.jrl.myemployees.rest.model.Employee;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
@@ -36,8 +37,8 @@ public class EmployeeDaoTest {
 	
 	@Before
 	public void setUp() {
-		emp1 = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111));
-		emp2 = new Employee(2, "firstName2", "lastName2", "email2", BigDecimal.valueOf(2222222));
+		emp1 = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111), "111223333");		
+		emp2 = new Employee(2, "firstName2", "lastName2", "email2", BigDecimal.valueOf(2222222), "222334444");
 	}
 
 	@Test
@@ -48,14 +49,37 @@ public class EmployeeDaoTest {
 
 	@Test
 	public void add_shouldCreateEmployee_AndGetById() {
-		dao.addEmployee(emp1);
+		Employee result = dao.addEmployee(emp1);
 		
-		Employee result = dao.getEmployeeById(emp1.getEmployeeId());
 		assertThat(result.getFirstName(), equalTo(emp1.getFirstName()));
 		assertThat(result.getCellPhone(), equalTo(emp1.getCellPhone()));
 		
 	}
+	
+	@Test
+	public void add_shouldReturnNull_WhenEmployeeExist() {
+		Employee result = dao.addEmployee(emp1);
+		
+		result = dao.addEmployee(emp1);
+		assertNull(result);
+	}
 
+	@Test
+	public void shouldGetEmployeeId() {
+		Employee result = dao.addEmployee(emp1);
+		int employeeId = dao.getEmployeeId(result.getTaxId());
+		assertThat(employeeId, equalTo(emp1.getEmployeeId()));
+		
+	}
+	
+	@Test
+	public void shouldNotGetEmployeeId() {
+		Employee result = dao.addEmployee(emp1);
+		int employeeId = dao.getEmployeeId("bogus");
+		assertThat(employeeId, equalTo(0));
+		
+	}
+	
 	@Test
 	public void getAllEmployees_shouldReturnEmployees() {
 		dao.addEmployee(emp1);
@@ -71,11 +95,16 @@ public class EmployeeDaoTest {
 		String newEmail = "newEmail.com";
 		dao.addEmployee(emp1);
 		emp1.setEmail(newEmail);
-		dao.updateEmployee(emp1);
+		Employee result = dao.updateEmployee(emp1);
 		
-		Employee result = dao.getEmployeeById(emp1.getEmployeeId());
 		assertThat(result.getEmail(), equalTo(emp1.getEmail()));
 		
+	}
+	
+	@Test
+	public void updateEmployee_shouldNotUpdate() {
+		Employee result =  dao.updateEmployee(emp1);
+		assertNull(result);
 	}
 	
 	@Test
@@ -83,20 +112,20 @@ public class EmployeeDaoTest {
 		dao.addEmployee(emp1);
 		dao.addEmployee(emp2);
 		dao.deleteEmployee(emp1.getEmployeeId());
-		assertThat(dao.employeeExists(emp1.getLastName()), equalTo(Boolean.FALSE));
+		assertThat(dao.employeeExists(emp1.getTaxId()), equalTo(Boolean.FALSE));
 		
 	}
 	
 	@Test
 	public void employeeExists_shouldReturnTrue() {
 		dao.addEmployee(emp1);
-		assertThat(dao.employeeExists(emp1.getLastName()), equalTo(Boolean.TRUE));
+		assertThat(dao.employeeExists(emp1.getTaxId()), equalTo(Boolean.TRUE));
 		
 	}
 
 	@Test
 	public void employeeExist_shouldReturnFalse() {
 		dao.addEmployee(emp1);
-		assertThat(dao.employeeExists(emp2.getLastName()), equalTo(Boolean.FALSE));
+		assertThat(dao.employeeExists(emp2.getTaxId()), equalTo(Boolean.FALSE));
 	}
 }

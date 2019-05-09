@@ -1,5 +1,6 @@
 package com.jrl.myemployees.rest.controller;
 
+import org.hamcrest.core.Is;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;import com.jrl.myemployees.MyEmployeesApplication;
@@ -45,7 +47,7 @@ public class EmployeeControllerTest {
 	ObjectMapper mapper = new ObjectMapper();
 	JSONArray employeesJson = new JSONArray();
 
-	private static Employee employee = new Employee(1, "firstName1", "lastName1", "email1@email.com", BigDecimal.valueOf(1111111));
+	private static Employee employee = new Employee(1, "firstName1", "lastName1", "email1@email.com", BigDecimal.valueOf(1111111), "111223333");
 	List<Employee> employees = new ArrayList<>();
 	
 	@Autowired
@@ -89,7 +91,7 @@ public class EmployeeControllerTest {
 	
 	@Test
 	public void testUpdateEmployeeSuccess() throws Exception {
-		Mockito.when(service.updateEmployee(any(Employee.class))).thenReturn(Boolean.TRUE);
+		Mockito.when(service.updateEmployee(any(Employee.class))).thenReturn(employee);
 		String employeeString = mapper.writeValueAsString(employee);
 		System.out.println(employeeString);
 		RequestBuilder request = MockMvcRequestBuilders
@@ -108,7 +110,7 @@ public class EmployeeControllerTest {
 	
 	@Test
 	public void testUpdateEmployeeNotModified() throws Exception {
-		Mockito.when(service.updateEmployee(any(Employee.class))).thenReturn(Boolean.FALSE);
+		Mockito.when(service.updateEmployee(any(Employee.class))).thenReturn(null);
 		String employeeString = mapper.writeValueAsString(employee);
 		
 		RequestBuilder request = MockMvcRequestBuilders
@@ -170,6 +172,21 @@ public class EmployeeControllerTest {
 		
 		this.mvc.perform(delete("/employees/1"))
 		.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	public void whenPostRequestToEmployeesAndIvalidEmployee() throws Exception {
+		employee.setLastName("");;
+		Mockito.when(service.addEmployee(any(Employee.class))).thenReturn(employee);
+		String employeeJson = mapper.writeValueAsString(employee);
+		System.out.println(employeeJson);
+		
+		this.mvc.perform(MockMvcRequestBuilders.post("/employees/")
+				.content(employeeJson)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.details[0]", Is.is("last name must not be empty")))
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
 	}
 
 }

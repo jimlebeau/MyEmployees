@@ -20,13 +20,13 @@ import com.jrl.myemployees.rest.model.EmployeeRowMapper;
 public class EmployeeDao implements IEmployeeDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeDao.class);
-	private static final String GETALLEMPLOYEES = "select EmployeeId, FirstName, LastName, Email, CellPhone from Employees";
-	private static final String GETEMPLOYEEBYID = "select EmployeeId, FirstName, LastName, Email, CellPhone from Employees where EmployeeId = ?";
-	private static final String INSERTEMPLOYEE = "INSERT INTO Employees (FirstName, LastName, Email, CellPhone) values (?, ?, ?, ?)";
-	private static final String GETEMPLOYEEBYLASTNAME = "SELECT EmployeeId FROM Employees WHERE LastName = ?";
-	private static final String UPDATEEMPLOYEE = "UPDATE Employees SET FirstName=?, LastName=?, Email=?, CellPhone=? WHERE EmployeeId=?";
+	private static final String GETALLEMPLOYEES = "select EmployeeId, FirstName, LastName, Email, CellPhone, TaxId from Employees";
+	private static final String GETEMPLOYEEBYID = "select EmployeeId, FirstName, LastName, Email, CellPhone, TaxId from Employees where EmployeeId = ?";
+	private static final String INSERTEMPLOYEE = "INSERT INTO Employees (FirstName, LastName, Email, CellPhone, TaxId) values (?, ?, ?, ?, ?)";
+	private static final String GETEMPLOYEEBYTAXID = "SELECT EmployeeId FROM Employees WHERE TaxId = ?";
+	private static final String UPDATEEMPLOYEE = "UPDATE Employees SET FirstName=?, LastName=?, Email=?, CellPhone=?, TaxId=? WHERE EmployeeId=?";
 	private static final String DELETEEMPLOYEE = "DELETE FROM Employees WHERE EmployeeId=?";
-	private static final String EMPLOYEEEXSITS = "SELECT count(*) FROM Employees WHERE LastName = ?";
+	private static final String EMPLOYEEEXSITS = "SELECT count(*) FROM Employees WHERE TaxId = ?";
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -52,20 +52,28 @@ public class EmployeeDao implements IEmployeeDao {
 
 	@Override
 	public Employee addEmployee(Employee employee) {
-		jdbcTemplate.update(INSERTEMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getCellPhone());
-		try {
-			int employeeId = jdbcTemplate.queryForObject(GETEMPLOYEEBYLASTNAME,  Integer.class, employee.getLastName());
-			employee.setEmployeeId(employeeId);
-		} catch (EmptyResultDataAccessException ex) {
-			employee = null;
-		}
-		return employee;
+		
+			int employeeId = getEmployeeId(employee.getTaxId());
+			if (employeeId != 0) {
+				return null;
+			} else {
+				jdbcTemplate.update(INSERTEMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getCellPhone(), employee.getTaxId());
+				employeeId = getEmployeeId(employee.getTaxId());
+				employee.setEmployeeId(employeeId);
+				return employee;
+			}
 	}
 
 	@Override
-	public void updateEmployee(Employee employee) {
-		jdbcTemplate.update(UPDATEEMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getCellPhone(), employee.getEmployeeId());
+	public Employee updateEmployee(Employee employee) {
 		
+		int employeeId = getEmployeeId(employee.getTaxId());
+		if (employeeId == 0) {
+			return null;
+		} else {
+			jdbcTemplate.update(UPDATEEMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getCellPhone(), employee.getTaxId(), employee.getEmployeeId());
+			return getEmployeeById(employee.getEmployeeId());
+		}
 	}
 
 	@Override
@@ -75,13 +83,24 @@ public class EmployeeDao implements IEmployeeDao {
 	}
 
 	@Override
-	public boolean employeeExists(String lastName) {
-		int count = jdbcTemplate.queryForObject(EMPLOYEEEXSITS, Integer.class, lastName);
+	public boolean employeeExists(String taxId) {
+		int count = jdbcTemplate.queryForObject(EMPLOYEEEXSITS, Integer.class, taxId);
 		if (count == 0) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+	
+	public int getEmployeeId(String taxId) {
+
+		try {
+			return jdbcTemplate.queryForObject(GETEMPLOYEEBYTAXID,  Integer.class, taxId);
+			
+		} catch(EmptyResultDataAccessException ex) {
+			return 0;
+		}
+		
 	}
 
 }
