@@ -122,8 +122,8 @@ public class EmployeeControllerTest {
 		MvcResult result = mvc.perform(request).andReturn();
 				
 		MockHttpServletResponse response = result.getResponse();
-		
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), response.getStatus());
+//		System.out.println(response.getContentAsString());
+		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
 		
 	}
 

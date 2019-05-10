@@ -63,8 +63,9 @@ public class EmployeeController {
 	public ResponseEntity<Employee> updateEmployee (@Valid @RequestBody Employee employee) {
 		Employee updatedEmployee = service.updateEmployee(employee);
 		if (updatedEmployee == null) {
-			throw new RecordDoesNotExistException("Employee record does not exist - " + employee.toString());
+			throw new RecordDoesNotExistException("Employee record does not exist or Employee TaxId already exist - " + employee.toString());
 		}
+		logger.info("updated employee - " + updatedEmployee.toString());
 		return new ResponseEntity<Employee>(updatedEmployee, HttpStatus.OK);
 	}
 	

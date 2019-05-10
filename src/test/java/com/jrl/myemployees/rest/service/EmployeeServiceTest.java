@@ -59,19 +59,16 @@ public class EmployeeServiceTest {
 	public void addEmployeeSuccess() {
 		Employee emp1 = new Employee(1, "first1", "last1", "email1", BigDecimal.valueOf(1111111), "111223333");
 		
-		Mockito.when(dao.employeeExists(emp1.getTaxId())).thenReturn(Boolean.FALSE);
-		Mockito.when(dao.addEmployee(emp1)).thenReturn(emp1);
-		
-		Employee result = service.addEmployee(emp1);
-		
-		assertThat(result.getEmployeeId(), equalTo(1));
-		
+		Mockito.when(dao.employeeExists(emp1.getEmployeeId())).thenReturn(Boolean.FALSE);
+		Mockito.when(dao.addEmployee(emp1)).thenReturn(emp1);		
+		Employee result = service.addEmployee(emp1);		
+		assertThat(result.getEmployeeId(), equalTo(1));		
 	}
 	
 	@Test
 	public void addEmployeeFail() {
 		Employee emp1 = new Employee(1, "first1", "last1", "email1", BigDecimal.valueOf(1111111), "111223333");
-		Mockito.when(dao.employeeExists(emp1.getTaxId())).thenReturn(Boolean.TRUE);
+		Mockito.when(dao.employeeExists(emp1.getEmployeeId())).thenReturn(Boolean.TRUE);
 		Employee result = service.addEmployee(emp1);
 		assertNull(result);
 	}
@@ -82,15 +79,15 @@ public class EmployeeServiceTest {
 		Employee updatedEmployee = new Employee(1, "bogus", "last1", "email1", BigDecimal.valueOf(1111111), "111223333");
 		Mockito.when(dao.getEmployeeById(emp1.getEmployeeId())).thenReturn(emp1);
 		Mockito.when(dao.updateEmployee(emp1)).thenReturn(updatedEmployee);
-		
 		Employee result = service.updateEmployee(emp1);
 		assertThat(updatedEmployee.getFirstName(), equalTo(result.getFirstName()));
 	}
 	
+	
 	@Test
 	public void updateEmployee_Fail() {
 		Employee emp1 = new Employee(1, "first1", "last1", "email1", BigDecimal.valueOf(1111111), "111223333");
-		Mockito.when(dao.getEmployeeById(emp1.getEmployeeId())).thenReturn(null);
+//		Mockito.when(dao.updateEmployee(emp1)).thenReturn(null);
 		Employee result = service.updateEmployee(emp1);
 		assertNull(result);
 		

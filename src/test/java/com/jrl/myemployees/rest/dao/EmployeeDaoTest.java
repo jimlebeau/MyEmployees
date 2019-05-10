@@ -65,17 +65,16 @@ public class EmployeeDaoTest {
 	}
 
 	@Test
-	public void shouldGetEmployeeId() {
+	public void shouldGetEmployeeIdByTaxId() {
 		Employee result = dao.addEmployee(emp1);
-		int employeeId = dao.getEmployeeId(result.getTaxId());
+		int employeeId = dao.getEmployeeIdByTaxId(result.getTaxId());
 		assertThat(employeeId, equalTo(emp1.getEmployeeId()));
 		
 	}
 	
 	@Test
-	public void shouldNotGetEmployeeId() {
-		Employee result = dao.addEmployee(emp1);
-		int employeeId = dao.getEmployeeId("bogus");
+	public void shouldNotGetEmployeeIdByTaxId() {
+		int employeeId = dao.getEmployeeIdByTaxId("bogus");
 		assertThat(employeeId, equalTo(0));
 		
 	}
@@ -102,8 +101,25 @@ public class EmployeeDaoTest {
 	}
 	
 	@Test
-	public void updateEmployee_shouldNotUpdate() {
+	public void updateEmployee_shouldNotUpdate_whenEmployeeIdDoesNotExist() {
 		Employee result =  dao.updateEmployee(emp1);
+		assertNull(result);
+	}	
+
+	@Test
+	public void updateEmployeeTaxId_shouldUpdate() {
+		dao.addEmployee(emp1);
+		emp1.setTaxId("999999999");
+		Employee result = dao.updateEmployee(emp1);
+		assertThat(result.getTaxId(), equalTo(emp1.getTaxId()));
+	}
+	
+	@Test
+	public void updateEmployeeTaxId_shouldNotUpdate_WhenTaxIdExist() {
+		dao.addEmployee(emp1);
+		dao.addEmployee(emp2);
+		emp1.setTaxId(emp2.getTaxId());
+		Employee result = dao.updateEmployee(emp1);
 		assertNull(result);
 	}
 	
@@ -112,20 +128,25 @@ public class EmployeeDaoTest {
 		dao.addEmployee(emp1);
 		dao.addEmployee(emp2);
 		dao.deleteEmployee(emp1.getEmployeeId());
-		assertThat(dao.employeeExists(emp1.getTaxId()), equalTo(Boolean.FALSE));
+		assertThat(dao.employeeExists(emp1.getEmployeeId()), equalTo(Boolean.FALSE));
 		
 	}
 	
 	@Test
 	public void employeeExists_shouldReturnTrue() {
 		dao.addEmployee(emp1);
-		assertThat(dao.employeeExists(emp1.getTaxId()), equalTo(Boolean.TRUE));
+		assertThat(dao.employeeExists(emp1.getEmployeeId()), equalTo(Boolean.TRUE));
 		
 	}
 
+	@Ignore
 	@Test
 	public void employeeExist_shouldReturnFalse() {
+		System.out.println(emp1.toString());
 		dao.addEmployee(emp1);
-		assertThat(dao.employeeExists(emp2.getTaxId()), equalTo(Boolean.FALSE));
+		List<Employee> employees = dao.getAllEmployees();
+		employees.stream().forEach((employee) -> System.out.println(employee));
+
+		assertThat(dao.employeeExists(emp2.getEmployeeId()), equalTo(Boolean.FALSE));
 	}
 }
