@@ -23,6 +23,7 @@ public class EmployeeExceptionController extends ResponseEntityExceptionHandler{
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		ErrorResponse error = new ErrorResponse("Server Error", details);
+		System.out.println(ex.toString());
 		return new ResponseEntity<Object>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -47,6 +48,14 @@ public class EmployeeExceptionController extends ResponseEntityExceptionHandler{
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		ErrorResponse error = new ErrorResponse("Employee record already exists", details);
+		return new ResponseEntity<Object>(error, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(TaxIdAlreadyExist.class)
+	public final ResponseEntity<Object> handleTaxIdAlreadyExistException(TaxIdAlreadyExist ex, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		ErrorResponse error = new ErrorResponse("Employee TaxId already exists", details);
 		return new ResponseEntity<Object>(error, HttpStatus.NOT_MODIFIED);
 	}
 	

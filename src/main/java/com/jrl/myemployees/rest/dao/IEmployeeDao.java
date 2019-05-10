@@ -10,6 +10,8 @@ public interface IEmployeeDao {
 	Employee addEmployee(Employee employee);
 	Employee updateEmployee(Employee employee);
 	void deleteEmployee(int employeeId);
-	boolean employeeExists(String taxId);
+	boolean employeeExists(int employeeId);
+	int getEmployeeIdByTaxId(String employeeTaxId);
+	boolean taxIdExist(String taxId);
 
 }

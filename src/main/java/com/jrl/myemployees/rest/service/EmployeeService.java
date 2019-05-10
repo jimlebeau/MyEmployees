@@ -31,7 +31,7 @@ public class EmployeeService implements IEmployeeService {
 
 	@Override
 	public Employee addEmployee(Employee employee) {
-		if (dao.employeeExists(employee.getTaxId())) {
+		if (dao.employeeExists(employee.getEmployeeId())) {
 			return null;
 		} else {
 			return dao.addEmployee(employee);
