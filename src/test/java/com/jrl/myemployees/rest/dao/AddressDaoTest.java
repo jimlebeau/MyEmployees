@@ -17,6 +17,7 @@ import com.jrl.myemployees.rest.model.Employee;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
@@ -38,8 +39,8 @@ public class AddressDaoTest {
 	
 	@Before
 	public void setup() {
-		address1 = new Address("111 First St", "San Jose", "98765", "CA", null, 1);
-		address2 = new Address("222 Second St", "Palo Alto", "87654", "CA", null, 2);
+		address1 = new Address("111 First St", "San Jose", "98765", "CA", 10, 1);
+		address2 = new Address("222 Second St", "Palo Alto", "87654", "CA", 11, 2);
 		employee = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111), "111223333");
 	}
 	
@@ -52,11 +53,17 @@ public class AddressDaoTest {
 	
 	@Test
 	public void add_shouldCreateAddress_AndGetById() {
-		dao.addAddress(address1);
+		Address result = dao.addAddress(address1);
 		
-		Address result = dao.getAddressById(address1.getAddressId());
 		assertThat(result.getStreetAddress(), equalTo(address1.getStreetAddress()));
 		assertThat(result.getCity(), equalTo(address1.getCity()));
+	}
+	
+	@Test
+	public void add_shouldReturnNullAddress() {
+		Address address = dao.addAddress(address1);
+		Address result = dao.addAddress(address1);
+		assertNull(result);
 	}
 	
 	@Test
@@ -75,31 +82,50 @@ public class AddressDaoTest {
 		dao.addAddress(address1);
 		address1.setZipCode(newZip);
 		
-		dao.updateAddress(address1);
-		
-		Address result = dao.getAddressById(address1.getAddressId());
+		Address result = dao.updateAddress(address1);
 		
 		assertThat(result.getZipCode(), equalTo(address1.getZipCode()));
 				
 	}
 	
 	@Test
+	public void updateAddress_shouldReturnNull() {
+		dao.addAddress(address1);
+		Address result = dao.updateAddress(address2);
+		assertNull(result);
+	}
+
+	@Test
 	public void deleteAddress_shouldDeleteAddress() {
 		dao.addAddress(address1);
 		dao.addAddress(address2);
 		dao.deleteAddress(address1.getAddressId());
-		assertThat(dao.addressExists(address1.getStreetAddress()), equalTo(Boolean.FALSE));
+		assertThat(dao.addressExists(address1.getAddressId()), equalTo(Boolean.FALSE));
 	}
+	
 	
 	@Test
 	public void addressExists_shouldReturnTrue() {
 		dao.addAddress(address1);
-		assertThat(dao.addressExists(address1.getStreetAddress()), equalTo(Boolean.TRUE));
+		assertThat(dao.addressExists(address1.getAddressId()), equalTo(Boolean.TRUE));
 	}
 	
 	@Test
 	public void addressExists_shouldReturnFalse() {
-		dao.addAddress(address1);
-		assertThat(dao.addressExists(address2.getStreetAddress()), equalTo(Boolean.FALSE));
+		dao.addAddress(address2);
+		assertThat(dao.addressExists(address1.getAddressId()), equalTo(Boolean.FALSE));
+	}
+	
+	@Test
+	public void getAddressIdByAddress_shouldReturnAddressId() {
+		Address address = dao.addAddress(address1);
+		assertThat(dao.getAddressIdByAddress(address1.getEmployeeId(), address1.getStreetAddress(), address1.getCity(), address1.getZipCode()), equalTo(address1.getAddressId()));
+	}
+	
+	@Test
+	public void getAddressIdByAddress_shoultNotReturnAddressId() {
+		dao.addAddress(address2);
+		assertThat(dao.getAddressIdByAddress(address1.getEmployeeId(), address1.getStreetAddress(), address1.getCity(), address1.getZipCode()), equalTo(0));
+		
 	}
 }

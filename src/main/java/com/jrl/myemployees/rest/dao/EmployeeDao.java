@@ -71,7 +71,7 @@ public class EmployeeDao implements IEmployeeDao {
 	public Employee updateEmployee(Employee employee) {
 		Employee updatedEmployee = null;
 		if (employeeExists(employee.getEmployeeId())) {
-			// employee record does not exist
+			// employee record exist
 			if (!taxIdExist(employee.getTaxId())) {
 				// employee taxId does not already exist
 				jdbcTemplate.update(UPDATEEMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getCellPhone(), employee.getTaxId(), employee.getEmployeeId());

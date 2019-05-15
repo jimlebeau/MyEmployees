@@ -8,8 +8,8 @@ public interface IAddressService {
 	List<Address> getAllAddresses();
 	Address getAddressById(int addressId);
 	List<Address> getAddressByEmployeeId(int employeeId);
-	boolean addAddress(Address address);
-	boolean updateAddress(Address address);
+	Address addAddress(Address address);
+	Address updateAddress(Address address);
 	void deleteAddress(int addressId);
 
 }

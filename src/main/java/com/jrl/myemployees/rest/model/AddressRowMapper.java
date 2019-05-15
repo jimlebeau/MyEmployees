@@ -13,6 +13,7 @@ public class AddressRowMapper implements RowMapper<Address>{
 		address.setStreetAddress(rs.getString("StreetAddress"));
 		address.setCity(rs.getString("City"));
 		address.setZipCode(rs.getString("ZipCode"));
+		address.setState(rs.getString("State"));
 		address.setEmployeeId(rs.getInt("EmployeeId"));
 		address.setAddressId(rs.getInt("AddressId"));
 		return address;

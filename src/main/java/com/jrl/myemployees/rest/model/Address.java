@@ -3,6 +3,7 @@ package com.jrl.myemployees.rest.model;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class Address implements Serializable {
 	
@@ -18,6 +19,7 @@ public class Address implements Serializable {
 	
 	private String state;
 	
+	@NotNull(message = "employeeId can not be empty")
 	private Integer employeeId;
 	
 	private Integer addressId;
