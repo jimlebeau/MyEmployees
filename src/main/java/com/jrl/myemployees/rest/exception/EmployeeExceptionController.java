@@ -47,7 +47,7 @@ public class EmployeeExceptionController extends ResponseEntityExceptionHandler{
 	public final ResponseEntity<Object> handleEmployeeDoesNotExistException(RecordDoesNotExistException ex, WebRequest request) {
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
-		ErrorResponse error = new ErrorResponse("Employee record already exists", details);
+		ErrorResponse error = new ErrorResponse("Employee record does not exists", details);
 		return new ResponseEntity<Object>(error, HttpStatus.NOT_FOUND);
 	}
 	

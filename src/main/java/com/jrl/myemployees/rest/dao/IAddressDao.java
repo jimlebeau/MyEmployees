@@ -8,9 +8,10 @@ public interface IAddressDao {
 	List<Address> getAllAddresses();
 	Address getAddressById(int addressId);
 	List<Address> getAddressesByEmployeeId(int employeeId);
-	void addAddress(Address address);
-	void updateAddress(Address address);
+	int getAddressIdByAddress(int employeeId, String streetAddress, String city, String zipCode);
+	Address addAddress(Address address);
+	Address updateAddress(Address address);
 	void deleteAddress(int addressId);
-	boolean addressExists(String streetAddress);
+	boolean addressExists(int addressId);
 
 }

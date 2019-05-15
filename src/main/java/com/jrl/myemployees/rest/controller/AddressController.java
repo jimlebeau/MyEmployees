@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.jrl.myemployees.rest.exception.RecordAlreadyExistException;
+import com.jrl.myemployees.rest.exception.RecordDoesNotExistException;
 import com.jrl.myemployees.rest.model.Address;
 import com.jrl.myemployees.rest.service.IAddressService;
 
@@ -47,27 +49,21 @@ public class AddressController {
 	}
 	
 	@PostMapping(value = "/")
-	public ResponseEntity<Void> addAddress (@Valid @RequestBody Address address, UriComponentsBuilder builder) {
-		service.addAddress(address);
-		boolean flag = service.addAddress(address);
-		if (flag == false) {
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		} else {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(builder.path("addresss/{id}").buildAndExpand(address.getAddressId()).toUri());
-			return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	public ResponseEntity<Address> addAddress (@Valid @RequestBody Address address, UriComponentsBuilder builder) {
+		Address addedAddress = service.addAddress(address);
+		if (addedAddress == null) {
+			throw new RecordAlreadyExistException("Address already exist or Employee Id does not exist" + address.toString());
 		}
+		return new ResponseEntity<Address>(addedAddress, HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value = "/")
 	public ResponseEntity<Address> updateAddress (@Valid @RequestBody Address address) {
-		
-		boolean flag = service.updateAddress(address);
-		if (flag == Boolean.FALSE) {
-			return new ResponseEntity<Address>(HttpStatus.NOT_MODIFIED);
-		} else {
-			return new ResponseEntity<Address>(address, HttpStatus.OK);
+		Address updatedAddress = service.updateAddress(address);
+		if (updatedAddress == null) {
+			throw new RecordDoesNotExistException("Address does not exist or Employee Id does not exist " + address.toString());
 		}
+		return new ResponseEntity<Address>(address, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

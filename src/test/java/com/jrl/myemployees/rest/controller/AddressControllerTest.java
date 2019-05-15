@@ -69,7 +69,7 @@ public class AddressControllerTest {
 	
 	@Test
 	public void testUpdateAddressSuccess() throws Exception {
-		Mockito.when(service.updateAddress(any(Address.class))).thenReturn(Boolean.TRUE);
+		Mockito.when(service.updateAddress(any(Address.class))).thenReturn(address);
 		String addressString = mapper.writeValueAsString(address);
 		RequestBuilder request = MockMvcRequestBuilders
 				.put("/addresses/")
@@ -87,9 +87,8 @@ public class AddressControllerTest {
 	}
 	@Test
 	public void testUpdateAddressNotModified() throws Exception {
-		Mockito.when(service.updateAddress(any(Address.class))).thenReturn(Boolean.FALSE);
+		Mockito.when(service.updateAddress(any(Address.class))).thenReturn(null);
 		String addresseString = mapper.writeValueAsString(address);
-		System.out.println(addresseString);
 		RequestBuilder request = MockMvcRequestBuilders
 				.put("/addresses/")
 				.content(addresseString)
@@ -100,13 +99,13 @@ public class AddressControllerTest {
 				
 		MockHttpServletResponse response = result.getResponse();
 		
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), response.getStatus());
+		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
 		
 	}
 
 	@Test
 	public void testAddAddressSuccess() throws Exception {
-		Mockito.when(service.addAddress(any(Address.class))).thenReturn(Boolean.TRUE);
+		Mockito.when(service.addAddress(any(Address.class))).thenReturn(address);
 		String actual = mapper.writeValueAsString(address);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -125,7 +124,7 @@ public class AddressControllerTest {
 	
 	@Test
 	public void testAddAddressConflict() throws Exception {
-		Mockito.when(service.addAddress(any(Address.class))).thenReturn(Boolean.FALSE);
+		Mockito.when(service.addAddress(any(Address.class))).thenReturn(null);
 		String actual = mapper.writeValueAsString(address);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
