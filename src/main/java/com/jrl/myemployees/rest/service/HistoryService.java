@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jrl.myemployees.rest.dao.IEmployeeDao;
 import com.jrl.myemployees.rest.dao.IHistoryDao;
 import com.jrl.myemployees.rest.model.History;
 
@@ -13,9 +14,11 @@ public class HistoryService implements IHistoryService {
 
 	@Autowired
 	private IHistoryDao dao;
+	private IEmployeeDao employeeDao;
 	
-	public HistoryService(IHistoryDao dao) {
+	public HistoryService(IHistoryDao dao, IEmployeeDao employeeDao) {
 		this.dao = dao;
+		this.employeeDao = employeeDao;
 	}
 
 	@Override
@@ -35,23 +38,27 @@ public class HistoryService implements IHistoryService {
 	}
 
 	@Override
-	public boolean addHistory(History history) {
-		if (dao.historyExists(history.getStartDate())) {
-			return Boolean.FALSE;
-		} else {
-			dao.addHistory(history);
-			return Boolean.TRUE;
+	public History addHistory(History history) {
+		History createdHistory = null;
+		if (dao.getHistoryIdByStartDateEmployeeId(history.getStartDate(), history.getEmployeeId()) == 0) {
+			if (employeeDao.employeeExists(history.getEmployeeId())) {
+				createdHistory = dao.addHistory(history);
+			}
 		}
+		return createdHistory;
 	}
 
 	@Override
-	public boolean updateHistory(History history) {
+	public History updateHistory(History history) {
+		History updatedHistory = null;
 		if (history.getHistoryId() != null && history.getHistoryId() != 0) {
-			dao.updateHistory(history);
-			return Boolean.TRUE;
-		} else {
-			return Boolean.FALSE;
+			if (dao.getHistoryById(history.getHistoryId()) != null) {
+				if (employeeDao.employeeExists(history.getEmployeeId())) {
+					updatedHistory = dao.updateHistory(history);
+				}
+			}
 		}
+		return updatedHistory;
 	}
 
 	@Override

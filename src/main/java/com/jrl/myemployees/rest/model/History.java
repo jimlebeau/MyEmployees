@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -28,6 +29,7 @@ public class History implements Serializable {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate endDate;
 	
+	@NotNull
 	private Integer employeeId;
 	
 	private Integer historyId;

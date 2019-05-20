@@ -10,9 +10,10 @@ public interface IHistoryDao {
 	List<History> getAllHistory();
 	History getHistoryById(int historyId);
 	List<History> getHistoryByEmployeeId(int employeeId);
-	void addHistory(History history);
-	void updateHistory(History history);
+	History addHistory(History history);
+	History updateHistory(History history);
 	void deleteHistory(int historyId);
-	boolean historyExists(LocalDate startDate);
+	boolean historyExist(int historyId);
+	int getHistoryIdByStartDateEmployeeId(LocalDate startDate, int emmployeeId);
 
 }

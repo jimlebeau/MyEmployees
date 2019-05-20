@@ -139,14 +139,9 @@ public class EmployeeDaoTest {
 		
 	}
 
-	@Ignore
 	@Test
 	public void employeeExist_shouldReturnFalse() {
-		System.out.println(emp1.toString());
-		dao.addEmployee(emp1);
-		List<Employee> employees = dao.getAllEmployees();
-		employees.stream().forEach((employee) -> System.out.println(employee));
-
+//		dao.addEmployee(emp1);
 		assertThat(dao.employeeExists(emp2.getEmployeeId()), equalTo(Boolean.FALSE));
 	}
 }
