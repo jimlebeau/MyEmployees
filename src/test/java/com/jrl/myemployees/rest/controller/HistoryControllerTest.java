@@ -81,7 +81,7 @@ public class HistoryControllerTest {
 	
 	@Test
 	public void testUpdateHistorySuccess() throws Exception {
-		Mockito.when(service.updateHistory(any(History.class))).thenReturn(Boolean.TRUE);
+		Mockito.when(service.updateHistory(any(History.class))).thenReturn(history);
 		String historyString = mapper.writeValueAsString(history);
 		RequestBuilder request = MockMvcRequestBuilders
 				.put("/history/")
@@ -99,7 +99,7 @@ public class HistoryControllerTest {
 	}
 	@Test
 	public void testUpdateHistoryNotModified() throws Exception {
-		Mockito.when(service.updateHistory(any(History.class))).thenReturn(Boolean.FALSE);
+		Mockito.when(service.updateHistory(any(History.class))).thenReturn(null);
 		String historyString = mapper.writeValueAsString(history);
 		System.out.println(history.toString());
 		System.out.println(historyString);
@@ -113,13 +113,13 @@ public class HistoryControllerTest {
 				
 		MockHttpServletResponse response = result.getResponse();
 		
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), response.getStatus());
+		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
 		
 	}
 
 	@Test
 	public void testAddHistorySuccess() throws Exception {
-		Mockito.when(service.addHistory(any(History.class))).thenReturn(Boolean.TRUE);
+		Mockito.when(service.addHistory(any(History.class))).thenReturn(history);
 		String actual = mapper.writeValueAsString(history);
 		System.out.println(actual);
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -138,7 +138,7 @@ public class HistoryControllerTest {
 	
 	@Test
 	public void testAddHistoryConflict() throws Exception {
-		Mockito.when(service.addHistory(any(History.class))).thenReturn(Boolean.FALSE);
+		Mockito.when(service.addHistory(any(History.class))).thenReturn(null);
 		String actual = mapper.writeValueAsString(history);
 		System.out.println(actual);
 		

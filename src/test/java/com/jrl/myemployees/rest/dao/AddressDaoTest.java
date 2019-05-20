@@ -52,7 +52,7 @@ public class AddressDaoTest {
 	}
 	
 	@Test
-	public void add_shouldCreateAddress_AndGetById() {
+	public void add_shouldCreateAddress() {
 		Address result = dao.addAddress(address1);
 		
 		assertThat(result.getStreetAddress(), equalTo(address1.getStreetAddress()));
@@ -119,7 +119,7 @@ public class AddressDaoTest {
 	@Test
 	public void getAddressIdByAddress_shouldReturnAddressId() {
 		Address address = dao.addAddress(address1);
-		assertThat(dao.getAddressIdByAddress(address1.getEmployeeId(), address1.getStreetAddress(), address1.getCity(), address1.getZipCode()), equalTo(address1.getAddressId()));
+		assertThat(dao.getAddressIdByAddress(address1.getEmployeeId(), address1.getStreetAddress(), address1.getCity(), address1.getZipCode()), equalTo(address.getAddressId()));
 	}
 	
 	@Test

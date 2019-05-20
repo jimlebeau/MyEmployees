@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.jrl.myemployees.rest.exception.RecordAlreadyExistException;
+import com.jrl.myemployees.rest.exception.RecordDoesNotExistException;
 import com.jrl.myemployees.rest.model.History;
 import com.jrl.myemployees.rest.service.IHistoryService;
 
@@ -47,27 +49,22 @@ public class HistoryController {
 	}
 	
 	@PostMapping(value = "/")
-	public ResponseEntity<Void> addHistory (@Valid @RequestBody History history, UriComponentsBuilder builder) {
-		service.addHistory(history);
-		boolean flag = service.addHistory(history);
-		if (flag == false) {
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		} else {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(builder.path("historys/{id}").buildAndExpand(history.getHistoryId()).toUri());
-			return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-		}
+	public ResponseEntity<History> addHistory (@Valid @RequestBody History history, UriComponentsBuilder builder) {
+		History addedHistory = service.addHistory(history);
+		if (addedHistory == null) {
+			throw new RecordAlreadyExistException("History already exist or Employee Id does not exist" + history.toString());
+		} 
+		return new ResponseEntity<History>(addedHistory, HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value = "/")
 	public ResponseEntity<History> updateHistory (@Valid @RequestBody History history) {
 		
-		boolean flag = service.updateHistory(history);
-		if (flag == Boolean.FALSE) {
-			return new ResponseEntity<History>(HttpStatus.NOT_MODIFIED);
-		} else {
-			return new ResponseEntity<History>(history, HttpStatus.OK);
-		}
+		History updatedHistory = service.updateHistory(history);
+		if (updatedHistory == null) {
+			throw new RecordDoesNotExistException("History does not exist or Employee Id does not exist " + history.toString());
+		} 
+		return new ResponseEntity<History>(history, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

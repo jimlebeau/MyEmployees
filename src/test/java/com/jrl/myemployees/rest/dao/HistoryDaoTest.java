@@ -17,6 +17,7 @@ import com.jrl.myemployees.rest.model.Employee;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
@@ -50,8 +51,8 @@ public class HistoryDaoTest {
 		testStartDate = LocalDate.parse(startDateString, formatter);
 		testEndDate = LocalDate.parse(endDateString, formatter);
 		
-		history1 = new History("job description 1", testStartDate, testEndDate, null, 1);
-		history2 = new History("job description 2", testEndDate, testStartDate, null, 2);
+		history1 = new History("job description 1", testStartDate, testEndDate, 1, 1);
+		history2 = new History("job description 2", testEndDate, testStartDate, 2, 2);
 		employee = new Employee(1, "firstName1", "lastName1", "email1", BigDecimal.valueOf(1111111), "111223333");
 	}
 
@@ -60,15 +61,6 @@ public class HistoryDaoTest {
 		dao = new HistoryDao();
 		assertThat(dao, notNullValue());
 		
-	}
-	
-	@Test
-	public void add_shouldCreateHistory_AndGetById() {
-		dao.addHistory(history1);
-		
-		History result = dao.getHistoryById(history1.getHistoryId());
-		assertThat(result.getJobDescription(), equalTo(history1.getJobDescription()));
-		assertThat(result.getStartDate(), equalTo(history1.getStartDate()));
 	}
 	
 	@Test
@@ -81,38 +73,66 @@ public class HistoryDaoTest {
 	}
 	
 	@Test
+	public void getHistoryById() {
+		
+	}
+	
+	@Test
+	public void add_shouldCreateHistory() {
+		History result = dao.addHistory(history1);
+		
+		assertThat(result.getJobDescription(), equalTo(history1.getJobDescription()));
+		assertThat(result.getStartDate(), equalTo(history1.getStartDate()));
+	}
+	
+	@Test
+	public void addHistory_shouldReturnNull_whenExist() {
+		History history = dao.addHistory(history1);
+		History result = dao.addHistory(history1);
+		assertNull(result);
+	}
+	
+	@Test
 	public void updateHistory_shouldUpdateHistory() {
 		String newJobDescription = "new job description";
 		
 		dao.addHistory(history1);
 		history1.setJobDescription(newJobDescription);
-		
-		dao.updateHistory(history1);
-		
-		History result = dao.getHistoryById(history1.getHistoryId());
+		History result = dao.updateHistory(history1);
 		
 		assertThat(result.getJobDescription(), equalTo(history1.getJobDescription()));
 				
 	}
 	
 	@Test
-	public void deleteHistory_shouldDeleteHistory() {
-		dao.addHistory(history1);
-		dao.addHistory(history2);
-		dao.deleteHistory(history1.getHistoryId());
-		assertThat(dao.historyExists(history1.getStartDate()), equalTo(Boolean.FALSE));
+	public void updateHistory_shouldReturnNull_whenHistoryDoesNotExist() {
+//		dao.addHistory(history1);
+		History result = dao.updateHistory(history2);
+		assertNull(result);
 	}
 	
 	@Test
-	public void historyExists_shouldReturnTrue() {
-		dao.addHistory(history1);
-		assertThat(dao.historyExists(history1.getStartDate()), equalTo(Boolean.TRUE));
+	public void historyExist_shouldReturnTrue() {
+		History addedHistory = dao.addHistory(history1);
+		assertThat(dao.historyExist(addedHistory.getHistoryId()), equalTo(Boolean.TRUE));
 	}
 	
 	@Test
 	public void historyExists_shouldReturnFalse() {
+		assertThat(dao.historyExist(history2.getHistoryId()), equalTo(Boolean.FALSE));
+	}
+	
+	@Test
+	public void getHistoryIdByStartDate_shouldReturnTrue() {
+		History history = dao.addHistory(history1);
+		assertThat(dao.getHistoryIdByStartDateEmployeeId(history.getStartDate(), history.getEmployeeId()), equalTo(history1.getHistoryId()));
+	}
+	
+	@Test
+	public void getHistoryIdByStartDate_shouldReturnFalse() {
 		dao.addHistory(history1);
-		assertThat(dao.historyExists(history2.getStartDate()), equalTo(Boolean.FALSE));
+		assertThat(dao.getHistoryIdByStartDateEmployeeId(history2.getStartDate(), history2.getEmployeeId()), equalTo(0));
+		
 	}
 	
 }
